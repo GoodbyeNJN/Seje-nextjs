@@ -1,0 +1,17 @@
+{
+    "extends": "../../tsconfig.json",
+
+    "ts-node": {
+        "transpileOnly": true,
+        "require": ["tsconfig-paths/register"]
+    },
+
+    "compilerOptions": {
+        "moduleResolution": "Node16",
+
+        "baseUrl": "..",
+        "paths": {
+            "blog/*": ["../blog/*"]
+        }
+    }
+}

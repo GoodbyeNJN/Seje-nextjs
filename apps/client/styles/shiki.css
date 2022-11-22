@@ -1,0 +1,19 @@
+pre.shiki {
+    @apply relative;
+
+    &.code-hide {
+        @apply hidden;
+    }
+
+    .line {
+        @apply min-h-[1rem];
+    }
+
+    .code-title {
+        @apply hidden;
+    }
+
+    .language-id {
+        @apply hidden;
+    }
+}
