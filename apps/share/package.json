@@ -1,0 +1,10 @@
+{
+    "name": "share",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "dayjs": "^1.11.7",
+        "deepmerge": "^4.2.2",
+        "urlcat": "^3.0.0"
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "name": "blog-next",
+    "version": "0.1.0",
+    "workspaces": [
+        "apps/*"
+    ],
+    "scripts": {
+        "dev": "ts-node scripts/app.ts dev",
+        "prebuild": "ts-node scripts/app.ts prebuild",
+        "build": "ts-node scripts/app.ts build",
+        "serve": "ts-node scripts/app.ts serve"
+    },
+    "dependencies": {
+        "react": "^18.2.0"
+    },
+    "devDependencies": {
+        "@types/node": "^18.13.0",
+        "concurrently": "^7.6.0",
+        "eslint": "^8.34.0",
+        "eslint-config-goodbyenjn": "^1.0.11",
+        "prettier": "^2.8.4",
+        "prettier-plugin-tailwindcss": "^0.2.2",
+        "ts-node": "^10.9.1",
+        "tsconfig-paths": "^4.1.2",
+        "typescript": "^4.9.5"
+    }
+}

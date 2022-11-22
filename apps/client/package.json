@@ -1,0 +1,40 @@
+{
+    "name": "client",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build --no-lint",
+        "start": "next start",
+        "export": "next export",
+        "lint": "next lint",
+        "postbuild": "next-sitemap"
+    },
+    "dependencies": {
+        "clsx": "^1.2.1",
+        "dayjs": "^1.11.7",
+        "lodash.debounce": "^4.0.8",
+        "lodash.throttle": "^4.1.1",
+        "next": "^13.1.6",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-spring": "^9.6.1",
+        "rehype-dom-parse": "^4.0.2",
+        "rehype-parse": "^8.0.4",
+        "rehype-react": "^7.1.2",
+        "unified": "^10.1.2"
+    },
+    "devDependencies": {
+        "@mertasan/tailwindcss-variables": "^2.5.1",
+        "@next/bundle-analyzer": "^13.1.6",
+        "@types/lodash.debounce": "^4.0.7",
+        "@types/lodash.throttle": "^4.1.7",
+        "@types/react": "18.0.28",
+        "@types/react-dom": "18.0.10",
+        "autoprefixer": "^10.4.13",
+        "next-sitemap": "^3.1.52",
+        "postcss": "^8.4.21",
+        "tailwindcss": "^3.2.6",
+        "unplugin-auto-import": "^0.14.2"
+    }
+}
