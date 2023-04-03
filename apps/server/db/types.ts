@@ -50,17 +50,19 @@ declare global {
             categories: Category[];
             tags: Tag[];
 
+            // post
+
             postsCategoriesMap: PostsCategoriesMap;
             postsTagsMap: PostsTagsMap;
         }
 
-        type Cache = Parser.Cache;
+        type Cache = Parser.CacheFile;
 
         interface Additional {
             caches: Cache[];
         }
 
-        type Db = Blog & Additional;
+        type Data = Blog & Additional;
     }
 }
 

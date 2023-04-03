@@ -2,6 +2,7 @@ import path from "path";
 
 import userBlogConfig from "blog/config";
 import deepmerge from "deepmerge";
+import _ from "lodash";
 import { getBlogPath } from "share/utils";
 
 import { defaultBlogConfig } from "./default";
@@ -16,20 +17,7 @@ if (userBlogConfig.code.theme) {
     blogConfig.code.theme = userBlogConfig.code.theme;
 }
 
-let paths: Config.Paths;
-export const getBlogPaths = () => {
-    if (paths) {
-        return paths;
-    }
-
-    paths = { ...blogConfig.paths };
-
-    paths = Object.fromEntries<Config.Paths>(
-        Object.entries(blogConfig.paths).map(([key, value]) => [
-            key,
-            path.resolve(getBlogPath(), value),
-        ]),
-    );
-
-    return paths;
-};
+export const getBlogConfigPaths = () =>
+    _.chain(blogConfig.paths)
+        .mapValues(config => path.resolve(getBlogPath(), config))
+        .value();

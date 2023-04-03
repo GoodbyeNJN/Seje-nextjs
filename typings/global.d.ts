@@ -4,7 +4,8 @@ declare global {
             APP_ROOT_PATH: string;
             BASE_PATH: string;
             SITE_URL: string;
-            ANALYZE: boolean;
+            ANALYZE_MODE: boolean;
+            WATCH_MODE: boolean;
         }
     }
 

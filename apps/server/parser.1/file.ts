@@ -9,10 +9,27 @@ import { getBlogPath, getHash, isArray, isString } from "share/utils";
 import walkdir from "walkdir";
 import { parse, stringify } from "yaml";
 
-export const readFile = async (filepath: string) => {
-    const content = await fse.readFile(filepath, "utf-8");
-    const hash = getHash(content);
-    return { hash, content };
+const walk = async (filepath: string) => {
+    const paths = await walkdir.async(filepath, { return_object: true });
+    const promises = _.chain(paths)
+        .entries()
+        .filter(([filepath, stat]) => stat.isFile() && path.extname(filepath) === ".md")
+        .map(async ([filepath, stat]) => {
+            const content = await fse.readFile(filepath, "utf-8");
+            const file: Parser.RawFile = {
+                path: path.relative(getBlogPath(), filepath),
+                mtime: dayjs(stat.mtime).format(),
+                hash: getHash(content),
+                content: matter(content, {
+                    excerpt: true,
+                    engines: { yaml: { parse, stringify } },
+                }),
+            };
+            return file;
+        })
+        .value();
+
+    return await Promise.all(promises);
 };
 
 const parseCategoryOrTag = (raw: unknown) => {
@@ -47,9 +64,17 @@ const parsePageFile = (file: Parser.RawFile): Parser.PageFileContent => {
     return { hash, title, slug, content };
 };
 
-export const parseFiles = async (filepath: string) => {
-    const content = await fse.readFile(filepath, "utf-8");
-    const hash = getHash(content);
+export const parseFiles = async (): Promise<Parser.FileMap> => {
+    const paths = getBlogConfigPaths();
 
-    return { hash, content };
+    const posts = (await walk(paths.posts)).map<Parser.PostFile>(file => ({
+        ...file,
+        content: parsePostFile(file),
+    }));
+    const pages = (await walk(paths.pages)).map<Parser.PageFile>(file => ({
+        ...file,
+        content: parsePageFile(file),
+    }));
+
+    return { posts, pages };
 };

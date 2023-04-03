@@ -137,13 +137,18 @@ importers:
 
   apps/share:
     specifiers:
+      '@types/lodash': ^4.14.191
       dayjs: ^1.11.7
       deepmerge: ^4.2.2
+      lodash: ^4.17.21
       urlcat: ^3.0.0
     dependencies:
       dayjs: 1.11.7
       deepmerge: 4.2.2
+      lodash: 4.17.21
       urlcat: 3.0.0
+    devDependencies:
+      '@types/lodash': 4.14.191
 
 packages:
 

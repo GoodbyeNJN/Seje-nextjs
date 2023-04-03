@@ -3,7 +3,7 @@ const BundleAnalyzer = require("@next/bundle-analyzer");
 const AutoImport = require("unplugin-auto-import/webpack");
 
 const withBundleAnalyzer = BundleAnalyzer({
-    enabled: process.env.NODE_ENV === "production" && JSON.parse(process.env.ANALYZE),
+    enabled: process.env.NODE_ENV === "production" && JSON.parse(process.env.ANALYZE_MODE),
 });
 
 /** @type {import("next").NextConfig} */

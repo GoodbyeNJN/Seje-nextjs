@@ -6,7 +6,7 @@ import { getBlogPath } from "share/utils";
 import { Client } from "./client";
 
 const filename = path.resolve(getBlogPath(), "db.json");
-const adapter = new JSONFile<Db.Db>(filename);
-const lowdb = new Low(adapter) as unknown as Db.LowDb<Db.Db>;
+const adapter = new JSONFile<Db.Data>(filename);
+const lowdb = new Low(adapter) as unknown as Db.LowDb<Db.Data>;
 
 export const db = new Client(lowdb);

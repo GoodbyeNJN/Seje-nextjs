@@ -4,10 +4,9 @@ import concurrently, { type ConcurrentlyCommandInput } from "concurrently";
 import { getBasePath, getSiteUrl } from "share/utils";
 
 const [, currentPath, subCommand] = process.argv;
-const APP_ROOT_PATH = path.resolve(currentPath, "../..");
+const APP_ROOT_PATH = path.dirname(currentPath);
 const BASE_PATH = getBasePath();
 const SITE_URL = getSiteUrl();
-const ANALYZE = false;
 const env = { APP_ROOT_PATH, BASE_PATH, SITE_URL };
 
 const server = "apps/server";
@@ -18,8 +17,8 @@ const commands: Record<string, ConcurrentlyCommandInput[]> = {
         {
             name: "server",
             prefixColor: "blue",
-            env,
-            command: `npm:build watch -w ${server}`,
+            env: { ...env, WATCH_MODE: true },
+            command: `npm:build -w ${server}`,
         },
         {
             name: "client",
@@ -40,7 +39,7 @@ const commands: Record<string, ConcurrentlyCommandInput[]> = {
         {
             name: "client",
             prefixColor: "green",
-            env: { ...env, ANALYZE },
+            env: { ...env, ANALYZE_MODE: false },
             command: `npm:build -w ${client} && npm:export -w ${client}`,
         },
     ],

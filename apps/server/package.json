@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "build": "nodemon scripts/app.ts"
+        "build": "nodemon app.ts"
     },
     "dependencies": {
         "@commonify/lowdb": "^3.0.0",

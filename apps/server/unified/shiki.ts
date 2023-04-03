@@ -1,6 +1,6 @@
 import path from "path";
 
-import { blogConfig, getBlogPaths } from "share/config";
+import { blogConfig, getBlogConfigPaths } from "share/config";
 import {
     getHighlighter,
     type HtmlRendererOptions,
@@ -34,7 +34,7 @@ const getElements = (lang: string | undefined, code: string): ElementsOptions =>
 });
 
 const getShikiInstances = async () => {
-    const paths = getBlogPaths();
+    const paths = getBlogConfigPaths();
 
     let { theme } = blogConfig.code;
     if (paths.themes) {

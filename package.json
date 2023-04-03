@@ -5,10 +5,9 @@
         "apps/*"
     ],
     "scripts": {
-        "dev": "ts-node scripts/app.ts dev",
-        "prebuild": "ts-node scripts/app.ts prebuild",
-        "build": "ts-node scripts/app.ts build",
-        "serve": "ts-node scripts/app.ts serve"
+        "dev": "ts-node app.ts dev",
+        "prebuild": "ts-node app.ts prebuild",
+        "build": "ts-node app.ts build"
     },
     "dependencies": {
         "react": "^18.2.0"
