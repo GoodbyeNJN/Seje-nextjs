@@ -1,28 +1,53 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
+    "compilerOptions": {
+        "target": "ES2017",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+
+        "jsx": "preserve",
+        "isolatedModules": true,
+        "esModuleInterop": true,
+
+        "strict": true,
+        "alwaysStrict": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": false,
+        "sourceMap": true,
+
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "downlevelIteration": true,
+
+        "pretty": true,
+
+        "allowJs": true,
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "incremental": true,
+
+        "paths": {
+            "@/*": ["./*"]
+        },
+
+        "plugins": [{ "name": "next" }]
+    },
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.cjs",
+        "**/*.mjs",
+        ".next/types/**/*.ts"
     ],
-    "paths": {
-      "~/*": ["./*"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+    "exclude": ["node_modules"]
 }

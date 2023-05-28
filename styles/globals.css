@@ -1,0 +1,9 @@
+@import url("https://fonts.fuckwall.cc/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Serif+TC:wght@400;700&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+@import "tailwindcss/base";
+@import "./seje";
+@import "./shiki";
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";

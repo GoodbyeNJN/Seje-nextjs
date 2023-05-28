@@ -1,0 +1,57 @@
+datasource db {
+    // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+    provider = "sqlite"
+    // url      = env("DATABASE_URL")
+    url      = "file:./db.sqlite?connection_limit=1"
+}
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["clientExtensions"]
+}
+
+model Page {
+    id          Int    @id @default(autoincrement())
+    filePath    String @unique
+    fileHash    String
+    contentHash String
+    title       String
+    slug        String
+    pathname    String @unique // 不带 /pages 前缀的路径
+    permalink   String @unique // 带 /pages 前缀的路径
+    content     String
+}
+
+model Post {
+    id          Int        @id @default(autoincrement())
+    filePath    String     @unique
+    fileHash    String
+    contentHash String
+    title       String
+    slug        String
+    pathname    String     @unique // 不带 /posts 前缀的路径
+    permalink   String     @unique // 带 /posts 前缀的路径
+    date        DateTime
+    year        Int
+    month       Int
+    excerpt     String
+    content     String
+    categories  Category[]
+    tags        Tag[]
+}
+
+model Category {
+    id        Int    @id @default(autoincrement())
+    slug      String @unique
+    pathname  String @unique // 不带 /categories 前缀的路径
+    permalink String @unique // 带 /categories 前缀的路径
+    posts     Post[]
+}
+
+model Tag {
+    id        Int    @id @default(autoincrement())
+    slug      String @unique
+    pathname  String @unique // 不带 /tags 前缀的路径
+    permalink String @unique // 带 /tags 前缀的路径
+    posts     Post[]
+}
