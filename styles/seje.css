@@ -1,0 +1,139 @@
+:root {
+    scrollbar-gutter: stable;
+
+    ::-webkit-scrollbar {
+        @apply h-1 w-1;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-opacity-0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply rounded-xl bg-seje-scrollbar bg-opacity-40 hover:bg-opacity-100;
+    }
+
+    ::-webkit-scrollbar-corner {
+        @apply bg-opacity-0;
+    }
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: theme(colors.seje.scrollbar) transparent;
+}
+
+body {
+    @apply relative mx-auto max-w-3xl break-words bg-seje-body px-4 text-seje-text transition-colors;
+    @apply font-serif text-base xl:text-lg;
+}
+
+h1 {
+    @apply text-2xl font-bold text-center;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    @apply text-xl font-bold;
+}
+
+p {
+}
+
+a {
+    @apply no-underline;
+}
+
+img {
+    &.failed {
+        @apply relative rounded-md border border-dashed border-seje-border;
+    }
+
+    &.failed::before {
+        @apply block h-full w-full bg-seje-border content-[""];
+
+        mask: var(--img-load-failed-url) center / clamp(theme(width.4), theme(width.32), 100%) auto
+            no-repeat;
+    }
+
+    &.failed::after {
+        @apply absolute bottom-2 left-0 w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-center text-base text-seje-comment content-[attr(alt)];
+    }
+}
+
+blockquote {
+    @apply mx-4 space-y-4 border-l-2 border-seje-border pb-2 pl-5 pt-1;
+}
+
+code,
+pre {
+    @apply relative font-mono text-base leading-5 text-seje-text;
+}
+
+code:not(pre code) {
+    @apply rounded bg-seje-border px-1 py-0.5 drop-shadow-sm;
+}
+
+pre {
+    @apply my-4 overflow-auto rounded-md bg-seje-border drop-shadow;
+
+    &.lang {
+        &::after {
+            @apply inline-block text-2xl font-bold opacity-25 content-[attr(data-language)];
+        }
+
+        &.overflow::after {
+            @apply sticky right-2 mt-2 align-top;
+        }
+
+        &.no-overflow::after {
+            @apply absolute right-2 top-2;
+        }
+    }
+
+    code {
+        @apply inline-block p-4;
+    }
+}
+
+table {
+    @apply mx-auto min-w-half;
+
+    th,
+    td {
+        @apply border border-seje-comment px-3 py-2;
+    }
+
+    th {
+        @apply bg-seje-border;
+    }
+}
+
+article {
+    hr {
+        @apply border-dashed border-seje-border;
+    }
+
+    a {
+        @apply text-seje-link underline;
+    }
+
+    ul {
+        @apply pl-8;
+
+        li {
+            @apply list-disc;
+        }
+    }
+
+    ol {
+        @apply pl-8;
+
+        li {
+            @apply list-decimal;
+        }
+    }
+}

@@ -1,0 +1,83 @@
+diff --git a/dist/rehype-pretty-code.js b/dist/rehype-pretty-code.js
+index 5e52c7643598e18ac10b338aa2bbc581d62bde17..a3750cb8a374592d52b714233da8c4f2f3722b96 100644
+--- a/dist/rehype-pretty-code.js
++++ b/dist/rehype-pretty-code.js
+@@ -12751,6 +12751,7 @@ function rehypePrettyCode(options = {}) {
+   const {
+     theme,
+     keepBackground,
++    defaultLang,
+     tokensMap = {},
+     filterMetaString = (v) => v,
+     onVisitLine = () => {},
+@@ -12816,7 +12817,7 @@ function rehypePrettyCode(options = {}) {
+ 
+         // TODO: allow escape characters to break out of highlighting
+         const strippedValue = value.replace(/{:[a-zA-Z.-]+}/, '');
+-        const meta = value.match(/{:([a-zA-Z.-]+)}$/)?.[1];
++        const meta = value.match(/{:([a-zA-Z.-]+)}$/)?.[1] || defaultLang;
+ 
+         if (!meta) {
+           return;
+@@ -12859,15 +12860,22 @@ function rehypePrettyCode(options = {}) {
+         node.children.length === 1 &&
+         node.children[0].tagName === 'code' &&
+         typeof node.children[0].properties === 'object' &&
+-        Array.isArray(node.children[0].properties.className) &&
+-        typeof node.children[0].properties.className[0] === 'string' &&
+-        node.children[0].properties.className[0].startsWith('language-')
++        typeof node.children[0].children[0] === 'object' &&
++        typeof node.children[0].children[0].value === 'string'
+       ) {
+         const codeNode = node.children[0].children[0];
+-        const lang = node.children[0].properties.className[0].replace(
+-          'language-',
+-          ''
+-        );
++
++        let lang = defaultLang;
++        if (
++          Array.isArray(node.children[0].properties.className) &&
++          typeof node.children[0].properties.className[0] === 'string'
++        ) {
++          lang = node.children[0].properties.className[0].replace(
++            'language-',
++            ''
++          ) || defaultLang;
++        }
++
+         let meta = filterMetaString(
+           node.children[0].data?.meta ??
+             node.children[0].properties.metastring ??
+@@ -12925,6 +12933,19 @@ function rehypePrettyCode(options = {}) {
+               highlighter.codeToHtml(strippedValue, 'txt')
+             );
+           }
++
++          if (trees[mode].children && trees[mode].children[0] && trees[mode].children[0].properties) {
++            const { style } = trees[mode].children[0].properties ?? {};
++            const color = `color:${highlighter.getTheme().fg.toUpperCase()}`;
++            
++            if (!style) {
++              trees[mode].children[0].properties.style = color;
++            } else if (style.endsWith(';')) {
++              trees[mode].children[0].properties.style += color;
++            } else {
++              trees[mode].children[0].properties.style += `;${color}`;
++            }
++          }
+         }
+ 
+         Object.entries(trees).forEach(([mode, tree], index) => {
+diff --git a/index.d.ts b/index.d.ts
+index 2ecfe150c9647a3beb19b74f567a9895cf93b221..7291ec55552472178d10fd7904cdbf2e30760ffe 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -5,6 +5,7 @@ type Theme = JSON | string;
+ export type Options = {
+   theme: Theme | Record<any, Theme>;
+   keepBackground: boolean;
++  defaultLang: string;
+   tokensMap: {[key: string]: string};
+   filterMetaString: (string: string) => string;
+   // TODO: strict types
