@@ -87,6 +87,16 @@ export const userConfigSchema = z.object({
         /** 是否展示语言 */
         showLanguage: z.boolean(),
     }),
+
+    /** 网站跟踪设置 */
+    trace: z.object({
+        /**
+         * Google Analytics
+         *
+         * 如需启用，请填入 id，例：G-000ABCDEF0
+         */
+        google: z.string().optional(),
+    }),
 });
 
 export const partialUserConfigSchema = userConfigSchema.deepPartial();

@@ -1,5 +1,5 @@
-import { Footer, Header } from "@/components";
-import { blogConfig, getFontMirror } from "@/config";
+import { Footer, GoogleAnalyticsScript, GoogleFonts, Header, ThemeScript } from "@/components";
+import { blogConfig } from "@/config";
 import "@/styles/globals.css";
 import { joinPathnameWithBasePath, joinPathnameWithoutPrefix } from "@/utils/url";
 
@@ -9,22 +9,15 @@ interface Props {
     children?: React.ReactNode;
 }
 
-const font = getFontMirror();
-
 const Layout = (props: Props) => {
     const { children } = props;
 
     return (
         <html lang="zh-CN" suppressHydrationWarning>
             <head>
-                <link rel="preconnect" href={`//${font.googleapis}`} />
-                <link rel="preconnect" href={`//${font.gstatic}`} crossOrigin="anonymous" />
-                <link
-                    href={`//${font.googleapis}/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap`}
-                    rel="stylesheet"
-                />
-
-                <script src={joinPathnameWithBasePath("/assets/theme.js")} />
+                <GoogleAnalyticsScript />
+                <GoogleFonts />
+                <ThemeScript />
             </head>
 
             <body

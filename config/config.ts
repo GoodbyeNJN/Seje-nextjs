@@ -39,6 +39,8 @@ export const defaultBlogConfig: UserConfig = {
         theme: { dark: "dark-plus", light: "light-plus" },
         showLanguage: true,
     },
+
+    trace: {},
 };
 
 export const blogConfig: UserConfig = {
@@ -76,4 +78,6 @@ export const blogConfig: UserConfig = {
         ...defaultBlogConfig.code,
         ...userBlogConfig.code,
     },
+
+    trace: {},
 };
