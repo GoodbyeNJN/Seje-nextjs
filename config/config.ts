@@ -79,5 +79,8 @@ export const blogConfig: UserConfig = {
         ...userBlogConfig.code,
     },
 
-    trace: {},
+    trace: {
+        ...defaultBlogConfig.trace,
+        ...userBlogConfig.trace,
+    },
 };
