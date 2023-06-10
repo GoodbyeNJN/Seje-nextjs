@@ -1,16 +1,16 @@
-import { isString } from "@/utils/type";
+import { isObject, isString } from "@/utils/type";
 
 import { blogConfig, defaultMenuItems } from "./config";
 
 import type { UserConfig } from "./schema";
 
-const GOOGLEAPIS_MAP: Record<UserConfig["font"]["mirror"], string> = {
+const GOOGLEAPIS_MAP = {
     google: "fonts.googleapis.com",
     loli: "fonts.loli.net",
     geekzu: "fonts.geekzu.org",
 };
 
-const GSTATIC_MAP: Record<UserConfig["font"]["mirror"], string> = {
+const GSTATIC_MAP = {
     google: "fonts.gstatic.com",
     loli: "gstatic.loli.net",
     geekzu: "gapis.geekzu.org/g-fonts",
@@ -51,6 +51,10 @@ export const getBasePath = () => {
 
 export const getFontMirror = () => {
     const { mirror } = blogConfig.font;
+
+    if (isObject(mirror)) {
+        return mirror;
+    }
 
     const googleapis = GOOGLEAPIS_MAP[mirror];
     const gstatic = GSTATIC_MAP[mirror];

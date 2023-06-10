@@ -66,8 +66,16 @@ export const userConfigSchema = z.object({
          * 字体源选择
          *
          * 默认使用 google 官方源，国内可选择 loli 或 geekzu 镜像源，能加快页面加载速度
+         *
+         * 也可以自定义其他源，例如：
+         * `{ "googleapis": "https://fonts.example.com", "gstatic": "https://static.example.com" }`
          */
-        mirror: z.enum(["google", "loli", "geekzu"]),
+        mirror: z
+            .object({
+                googleapis: z.string(),
+                gstatic: z.string(),
+            })
+            .or(z.enum(["google", "loli", "geekzu"])),
     }),
 
     /** 代码设置 */
