@@ -14,8 +14,8 @@ const getSunDotPositions = (index: number) => {
     const angle = sunDotAngles[index] || 0;
     const angleInRads = (angle / 180) * Math.PI;
 
-    const cx = halfSize + dotDistance * Math.cos(angleInRads);
-    const cy = halfSize + dotDistance * Math.sin(angleInRads);
+    const cx = Math.round((halfSize + dotDistance * Math.cos(angleInRads)) * 100) / 100;
+    const cy = Math.round((halfSize + dotDistance * Math.sin(angleInRads)) * 100) / 100;
 
     return { cx, cy };
 };
