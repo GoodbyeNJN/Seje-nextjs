@@ -15,6 +15,10 @@ export const TraceScript: React.FC = () => {
 
     return (
         <>
+            {custom && (
+                <script dangerouslySetInnerHTML={{ __html: `</script>${custom}<script>` }} />
+            )}
+
             {google && (
                 <>
                     <Script
@@ -28,9 +32,6 @@ export const TraceScript: React.FC = () => {
                 </>
             )}
 
-            {custom && (
-                <script dangerouslySetInnerHTML={{ __html: `</script>${custom}<script>` }} />
-            )}
         </>
     );
 };
