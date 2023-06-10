@@ -49,7 +49,7 @@ export const userConfigSchema = z.object({
          * 其中链接可以是以 / 开头的相对路径，也可以是完整的 URL。
          *
          * 例如：
-         * { "关于": "/about", "GitHub": "https://github.com" }
+         * `{ "关于": "/about", "GitHub": "https://github.com" }`
          */
         customItems: z.record(z.string()),
     }),
@@ -83,7 +83,8 @@ export const userConfigSchema = z.object({
         /**
          * 代码主题
          *
-         * 可以是一个字符串，也可以是一个对象，例如：{ "dark": "dark-plus", "light": "light-plus" }
+         * 可以是一个字符串，也可以是一个对象，例如：
+         * `{ "dark": "dark-plus", "light": "light-plus" }`
          */
         theme: z
             .object({
@@ -104,6 +105,16 @@ export const userConfigSchema = z.object({
          * 如需启用，请填入 id，例：G-000ABCDEF0
          */
         google: z.string().optional(),
+
+        /**
+         * 自定义
+         *
+         * 大部分网站跟踪功能都是通过加载脚本实现，如需启用，请填写完整的 script 标签
+         *
+         * 例如：
+         * `<script async src="https://example.com/analytic.js" /><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js", new Date());gtag("config", "id")</script>`
+         */
+        custom: z.string(),
     }),
 });
 

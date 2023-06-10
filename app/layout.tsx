@@ -1,4 +1,4 @@
-import { Footer, GoogleAnalyticsScript, GoogleFonts, Header, ThemeScript } from "@/components";
+import { Footer, GoogleFonts, Header, ThemeScript, TraceScript } from "@/components";
 import { blogConfig } from "@/config";
 import "@/styles/globals.css";
 import { joinPathnameWithBasePath, joinPathnameWithoutPrefix } from "@/utils/url";
@@ -15,7 +15,8 @@ const Layout = (props: Props) => {
     return (
         <html lang="zh-CN" suppressHydrationWarning>
             <head>
-                <GoogleAnalyticsScript />
+                {/* 注意顺序 */}
+                <TraceScript />
                 <GoogleFonts />
                 <ThemeScript />
             </head>

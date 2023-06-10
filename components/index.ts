@@ -13,5 +13,5 @@ export { Header } from "./header";
 export { Image, ImageWithPreview } from "./image";
 export { Label } from "./label";
 export { Link } from "./link";
-export { GoogleFonts, GoogleAnalyticsScript, ThemeScript } from "./meta";
+export { GoogleFonts, TraceScript, ThemeScript } from "./meta";
 export { Post, PostList } from "./post";
