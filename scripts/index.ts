@@ -1,75 +1,105 @@
-import path from "node:path";
-import url from "node:url";
+import * as R from "remeda";
 
-import chalk from "chalk";
-import concurrently from "concurrently";
+import { clearConsole, clearMarkdownPath, clearPublicPath } from "./clear";
+import { copyFiles, watchFiles } from "./copy";
+import { generateNextConfig } from "./generator";
+import { startNextJs, stopNextJs } from "./nextjs";
+import { validateBlogConfig, watchBlogConfig } from "./validation";
 
-import { createLogger } from "@/utils/logger";
-
-import type { ConcurrentlyCommandInput } from "concurrently";
-
-if (!process.env.SKIP_CONFIG_VALIDATION) {
-    const logger = createLogger(chalk.green("[validate]"));
-
-    try {
-        await import("../config/validation");
-    } catch (error) {
-        logger.error("Blog config validation failed!");
-
-        if (error instanceof Error) {
-            error.message.split("\n").forEach(line => logger.error(line));
-        }
-
-        process.exit(1);
-    }
-}
-
-type SubCommand = "dev" | "prebuild" | "build";
-
-const thisFilePath = process.argv[1] || url.fileURLToPath(import.meta.url);
-const subCommand = (process.argv[2] || "dev") as SubCommand;
+const command = process.argv[2] || "dev";
 const argv = process.argv.slice(3);
 
-const { getBasePath } = await import("@/config");
-const env: NodeJS.ProcessEnv = {
-    ...process.env,
-    NODE_ENV: subCommand !== "dev" ? "production" : "development",
-    APP_PATH: path.resolve(path.dirname(thisFilePath)),
-    BASE_PATH: getBasePath(),
-    BUNDLE_ANALYZE: argv.includes("--analyze") ? "true" : "false",
+// --preview 参数用于本地编写文章时预览文章效果，包含草稿
+// --analyze 参数用于分析构建结果
+// --skip-validation 参数用于跳过博客配置文件校验，用于在 CI 环境下快速构建
+const args = R.mapValues(
+    {
+        preview: false,
+        analyze: false,
+        "skip-validation": false,
+    },
+    v => {
+        const index = argv.indexOf(`--${v}`);
+        if (index === -1) {
+            return v;
+        }
+
+        // 删除参数，防止影响 nextjs 的参数解析
+        argv.splice(index, 1);
+        return true;
+    },
+);
+
+const commonOptions = {
+    isDev: command === "dev",
+    isProd: command !== "dev",
+};
+const validationOptions = {
+    ...commonOptions,
+    skip: args["skip-validation"],
+};
+const copyOptions = {
+    ...commonOptions,
+    preview: args.preview,
+};
+const nextOptions = {
+    ...commonOptions,
+    command,
+    argv,
+    analyze: args.analyze,
 };
 
-const commands: Record<SubCommand, ConcurrentlyCommandInput[]> = {
-    dev: [
-        {
-            name: "watcher",
-            env,
-            command: "npx tsx scripts/watcher.ts",
-            prefixColor: "blue",
+const pre = async () => {
+    clearConsole();
+
+    const isValidate = await validateBlogConfig(validationOptions);
+    watchBlogConfig({
+        ...validationOptions,
+        onSuccess: async () => {
+            // 校验通过，重新开始构建
+            await main();
         },
-        {
-            name: "next",
-            env,
-            command: "npx next dev",
-            prefixColor: "green",
+        onFail: async () => {
+            // 校验失败，停止 nextjs
+            await stopNextJs();
         },
-    ],
-    prebuild: [
-        {
-            name: "watcher",
-            env,
-            command: "npx tsx scripts/watcher.ts",
-            prefixColor: "blue",
-        },
-    ],
-    build: [
-        {
-            name: "next",
-            env,
-            command: "npx next build",
-            prefixColor: "green",
-        },
-    ],
+    });
+
+    // 校验通过，开始构建
+    isValidate && (await main());
 };
 
-concurrently(commands[subCommand]);
+const main = async () => {
+    clearConsole();
+
+    // 清空 public 和 src/app/(markdowns) 文件夹
+    await clearPublicPath(commonOptions);
+    await clearMarkdownPath(commonOptions);
+
+    await copyFiles(copyOptions);
+    await watchFiles(copyOptions);
+
+    await generateNextConfig({
+        ...commonOptions,
+        onBuildStart: async () => {
+            // console.log("build start:");
+            await stopNextJs();
+        },
+        onBuildEnd: async () => {
+            // clearConsole();
+            // console.log("build end:");
+            startNextJs(nextOptions);
+        },
+        onRebuildStart: async () => {
+            // console.log("rebuild start:");
+            // await stopNextJs();
+        },
+        onRebuildEnd: async () => {
+            // clearConsole();
+            // console.log("rebuild end:");
+            // startNextJs(nextOptions);
+        },
+    });
+};
+
+pre();

@@ -1,0 +1,10 @@
+http://wsl.lan:3001 {
+	handle_path /blog* {
+		root * /home/cc/blog-next/out
+		file_server
+		try_files {path} /index.html
+	}
+	handle_errors {
+		rewrite * /404.html
+	}
+}

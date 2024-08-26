@@ -1,0 +1,22 @@
+diff --git a/dist/core.mjs b/dist/core.mjs
+index 9f01a2f818693e7f0656a98595c1e83dd361bc58..0752063bb7e66069a0dec6a6c4e54a0f7060572e 100644
+--- a/dist/core.mjs
++++ b/dist/core.mjs
+@@ -4705,7 +4705,7 @@ function codeToHast(context, code, options) {
+             if (idx === 0 && defaultColor) {
+               acc[key] = value;
+             } else {
+-              const varKey = cssVariablePrefix + themeTokens[idx][0] + (key === "color" ? "" : `-${key}`);
++              const varKey = cssVariablePrefix + themeTokens[idx][0] + (key === "color" ? "-fg" : `-${key}`);
+               if (acc[key])
+                 acc[key] += `;${varKey}:${value}`;
+               else
+@@ -4721,7 +4721,7 @@ function codeToHast(context, code, options) {
+         });
+       }
+     }
+-    fg = themeTokens.map((t, idx) => (idx === 0 && defaultColor ? "" : `${cssVariablePrefix + t[0]}:`) + themeRegs[idx].fg).join(";");
++    fg = themeTokens.map((t, idx) => (idx === 0 && defaultColor ? "" : `${cssVariablePrefix + t[0]}-fg:`) + themeRegs[idx].fg).join(";");
+     bg = themeTokens.map((t, idx) => (idx === 0 && defaultColor ? "" : `${cssVariablePrefix + t[0]}-bg:`) + themeRegs[idx].bg).join(";");
+     themeName = `shiki-themes ${themeRegs.map((t) => t.name).join(" ")}`;
+     rootStyle = defaultColor ? void 0 : [fg, bg].join(";");

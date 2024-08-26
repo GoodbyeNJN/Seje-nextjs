@@ -13,6 +13,7 @@ export type Event =
 
 export interface WatcherEvents {
     event: (event: Event) => void;
+    error: (error: Error) => void;
 }
 
 export class Watcher extends TypedEmitter<WatcherEvents> {
@@ -36,9 +37,7 @@ export class Watcher extends TypedEmitter<WatcherEvents> {
     };
 
     private onAll = (rawType: RawEventType, path: string) => {
-        if (rawType === "addDir" || rawType === "unlinkDir") {
-            return;
-        }
+        if (rawType === "addDir" || rawType === "unlinkDir") return;
 
         const type = rawType === "add" ? "create" : rawType === "change" ? "update" : "remove";
 

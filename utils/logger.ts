@@ -1,27 +1,26 @@
 import chalk from "chalk";
-import _ from "lodash";
 
 const format = (level: "info" | "warn" | "error") => {
     const map = {
-        info: `- ${chalk.cyan(level)} `,
-        warn: `- ${chalk.yellow(level)} `,
-        error: `- ${chalk.red(level)}`,
-        default: `- ${chalk.green(level)}`,
+        info: `${chalk.cyan(level)} `,
+        warn: `${chalk.yellow(level)} `,
+        error: `${chalk.red(level)}`,
+        default: `${chalk.green(level)}`,
     };
 
     return map[level] || map.default;
 };
 
-export const createLogger = (prefix?: string) => ({
-    info: prefix
-        ? _.partial(console.log, prefix, format("info"))
-        : _.partial(console.log, format("info")),
-    warn: prefix
-        ? _.partial(console.log, prefix, format("warn"))
-        : _.partial(console.log, format("warn")),
-    error: prefix
-        ? _.partial(console.log, prefix, format("error"))
-        : _.partial(console.log, format("error")),
-});
+const logger =
+    (...args1: Parameters<typeof console.log>) =>
+    (...args2: Parameters<typeof console.log>) =>
+        console.log(...args1, ...args2);
 
-export const logger = createLogger();
+const info = format("info");
+const warn = format("warn");
+const error = format("error");
+
+export const createLogger = (prefix?: string) =>
+    prefix
+        ? { info: logger(prefix, info), warn: logger(prefix, warn), error: logger(prefix, error) }
+        : { info: logger(info), warn: logger(warn), error: logger(error) };

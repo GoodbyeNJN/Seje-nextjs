@@ -2,12 +2,24 @@ import userBlogConfig from "@/blog/config";
 
 import type { UserConfig } from "./schema";
 
-export const defaultMenuItems: Record<keyof UserConfig["menu"]["defaultItems"], string> = {
-    home: "主页",
-    archives: "归档",
-    categories: "分类",
-    tags: "标签",
+export const googleapisMap = {
+    google: "fonts.googleapis.com",
+    loli: "fonts.loli.net",
+    geekzu: "fonts.geekzu.org",
 };
+
+export const gstaticMap = {
+    google: "fonts.gstatic.com",
+    loli: "gstatic.loli.net",
+    geekzu: "gapis.geekzu.org/g-fonts",
+};
+
+export const defaultNavbar = [
+    { label: "主页", href: "/" },
+    { label: "归档", href: "/archives" },
+    { label: "分类", href: "/categories" },
+    { label: "标签", href: "/tags" },
+];
 
 export const defaultBlogConfig: UserConfig = {
     title: "Yet Another Blog",
@@ -17,18 +29,39 @@ export const defaultBlogConfig: UserConfig = {
     url: "https://example.com",
 
     home: {
-        showExcerpt: true,
+        showSummary: true,
         showReadMore: true,
-        postsPerPage: 10,
+        showPagination: true,
+        postsPerPage: 5,
+    },
+
+    post: {
+        prependPostSummary: false,
+        prependPageSummary: false,
+        showPostCategories: true,
+        showPostTags: true,
+        showPageTitle: false,
     },
 
     menu: {
-        defaultItems: defaultMenuItems,
+        defaultItems: {
+            home: "主页",
+            archives: "归档",
+            categories: "分类",
+            tags: "标签",
+        },
         customItems: {},
     },
 
     footer: {
         showCopyright: true,
+    },
+
+    date: {
+        showDateInPost: true,
+        showDateInPage: false,
+        showCreatedOrUpdated: "created",
+        showDetailTooltip: true,
     },
 
     font: {
@@ -38,6 +71,7 @@ export const defaultBlogConfig: UserConfig = {
     code: {
         theme: { dark: "dark-plus", light: "light-plus" },
         showLanguage: true,
+        showLineNumber: true,
     },
 
     trace: {},
@@ -50,6 +84,11 @@ export const blogConfig: UserConfig = {
     home: {
         ...defaultBlogConfig.home,
         ...userBlogConfig.home,
+    },
+
+    post: {
+        ...defaultBlogConfig.post,
+        ...userBlogConfig.post,
     },
 
     menu: {
@@ -67,6 +106,11 @@ export const blogConfig: UserConfig = {
     footer: {
         ...defaultBlogConfig.footer,
         ...userBlogConfig.footer,
+    },
+
+    date: {
+        ...defaultBlogConfig.date,
+        ...userBlogConfig.date,
     },
 
     font: {
