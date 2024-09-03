@@ -1,0 +1,90 @@
+"use client";
+
+import { animated, config, useReducedMotion, useSpring, useTrail } from "@react-spring/web";
+
+import { useTheme } from "client/hooks/useTheme";
+
+const id = "moon-mask";
+const size = 20;
+const halfSize = size / 2;
+const sunDotAngles = Array.from({ length: 6 }, (v, i) => i * 60);
+const dotDistance = 8;
+
+const getSunDotPositions = (index: number) => {
+    const angle = sunDotAngles[index] || 0;
+    const angleInRads = (angle / 180) * Math.PI;
+
+    const cx = Math.round((halfSize + dotDistance * Math.cos(angleInRads)) * 100) / 100;
+    const cy = Math.round((halfSize + dotDistance * Math.sin(angleInRads)) * 100) / 100;
+
+    return { cx, cy };
+};
+
+// 明暗模式切换按钮
+export const SwitchThemeButton: React.FC = () => {
+    const reducedMotion = useReducedMotion();
+    const preferReducedMotion = Boolean(reducedMotion);
+
+    const { theme, toggle } = useTheme();
+    const isDarkMode = theme === "dark" ? true : false;
+
+    const svg = useSpring({
+        transform: isDarkMode ? "rotate(40deg)" : "rotate(90deg)",
+        immediate: preferReducedMotion,
+    });
+    const mask = useSpring({
+        cx: isDarkMode ? 10 : 25,
+        cy: isDarkMode ? 2 : 0,
+        config: { ...config.stiff, mass: 3.1 },
+        immediate: preferReducedMotion,
+    });
+    const circle = useSpring({
+        r: isDarkMode ? 9 : 5,
+        immediate: preferReducedMotion,
+    });
+
+    const dot = useTrail(sunDotAngles.length, {
+        transform: isDarkMode ? 0 : 1,
+        transformOrigin: "center center",
+        config: { ...config.stiff, friction: 21 },
+        immediate: isDarkMode || preferReducedMotion,
+    });
+
+    const onClick = () => {
+        toggle();
+    };
+
+    return (
+        <button aria-label="switch theme" onClick={onClick} className="h-5 w-5">
+            <animated.svg viewBox={`0 0 ${size} ${size}`} style={svg}>
+                <mask id={id}>
+                    <rect x="0" y="0" width={size} height={size} fill="#fff" />
+                    <animated.circle {...mask} r="8" fill="#000" />
+                </mask>
+
+                <animated.circle
+                    cx={halfSize}
+                    cy={halfSize}
+                    fill="currentColor"
+                    mask={`url(#${id})`}
+                    {...circle}
+                />
+
+                <g>
+                    {dot.map(({ transform, ...rest }, index) => (
+                        <animated.circle
+                            key={index}
+                            r={1.5}
+                            {...getSunDotPositions(index)}
+                            fill="currentColor"
+                            style={{
+                                ...rest,
+                                transform: transform.to(t => `scale(${t})`),
+                            }}
+                        />
+                    ))}
+                </g>
+            </animated.svg>
+        </button>
+    );
+};

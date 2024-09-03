@@ -1,0 +1,15 @@
+// eslint-disable-next-line react/no-typos
+// import "react";
+
+declare module "react" {
+    interface CSSProperties {
+        // Allow any CSS Custom Properties
+        [index: `--${string}`]: string | number;
+    }
+
+    interface PropsWithClassName {
+        className?: string;
+    }
+}
+
+export {};
