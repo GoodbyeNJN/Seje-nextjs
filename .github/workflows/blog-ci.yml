@@ -11,46 +11,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Seje Theme Repository
-        uses: actions/checkout@v3
+      - name: Checkout Seje repository
+        uses: actions/checkout@v4
         with:
           repository: GoodbyeNJN/Seje-nextjs
 
-      - name: Checkout Blog Repository
-        uses: actions/checkout@v3
+      - name: Checkout blog repository
+        uses: actions/checkout@v4
         with:
           path: blog
 
       - name: Setup Nodejs
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: lts
+          node-version: lts/*
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: latest
 
-      - name: Get pnpm Store Directory
+      - name: Get pnpm store directory
         id: pnpm-cache
         run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - name: Setup pnpm Cache
-        uses: actions/cache@v3
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build and Export
-        run: npm run build
+      - name: Build and export
+        run: npm run build:ci
 
-      - name: Archive Dist Files
-        uses: thedoctor0/zip-release@main
+      - name: Archive dist files
+        uses: thedoctor0/zip-release@0.7.6
         with:
           type: "zip"
           filename: "release.zip"
@@ -58,11 +58,11 @@ jobs:
           path: "./*"
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: out/release.zip
 
-      - name: Trigger Webhook
-        uses: joelwmale/webhook-action@master
+      - name: Trigger webhook
+        uses: joelwmale/webhook-action@2.4.1
         with:
           url: ${{ secrets.WEBHOOK_URL }}
