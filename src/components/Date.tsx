@@ -1,6 +1,6 @@
 import { blogConfig } from "virtual-blog-config";
 
-import { getChineseDate } from "utils/date";
+import { fromISODateString, getChineseDate } from "utils/date";
 
 export interface DateProps extends React.PropsWithClassName {
     created: string;
@@ -10,7 +10,7 @@ export interface DateProps extends React.PropsWithClassName {
 
 export const Date: React.FC<DateProps> = props => {
     const { created, updated: _updated, noYear, className } = props;
-    const { showCreatedOrUpdated, showDetailTooltip } = blogConfig.date;
+    const { timezone, showCreatedOrUpdated, showDetailTooltip } = blogConfig.date;
 
     // 如果更新时间是默认值，那么就用创建时间代替
     const updated = _updated === "1970-01-01" ? created : _updated;
@@ -18,7 +18,7 @@ export const Date: React.FC<DateProps> = props => {
     const title = `创建于：${created}` + (_updated === "1970-01-01" ? "" : `\n更新于：${updated}`);
 
     const { year, month, day } = getChineseDate(
-        showCreatedOrUpdated === "created" ? created : updated,
+        fromISODateString(showCreatedOrUpdated === "created" ? created : updated, timezone),
     );
 
     return (

@@ -53,6 +53,9 @@ const logger = createLogger("[mdx-file-loader]");
 const debug = createDebugger("[mdx-file-loader]");
 const { isDev, isProd, isDeployPreview, isWorkerThread } = getValuesFromProcessEnv();
 
+const blogConfig = getBlogConfig();
+const { showSummary } = blogConfig.home;
+
 const metadataMap = new Map<string, Metadata>();
 
 const EXCLUDE_DRAFTS_PATTERN = "**/!(_)*.{md,mdx}";
@@ -96,9 +99,6 @@ const tasks: Task[] = [
         match: vfile => isMdxFile(vfile) && !vfile.filename.endsWith(".page"),
         transform: async vfile => {
             if (!isEmpty(vfile.value)) {
-                const blogConfig = getBlogConfig();
-                const { showSummary } = blogConfig.home;
-
                 const file = vfile.clone();
                 const { summary, page } = await parseMdxFile(file);
 

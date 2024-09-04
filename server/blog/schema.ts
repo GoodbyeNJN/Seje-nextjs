@@ -66,6 +66,11 @@ export const schema = z
 
         date: z
             .object({
+                timezone: z
+                    .string()
+                    .optional()
+                    .default("Asia/Shanghai")
+                    .describe("时区(默认为 Asia/Shanghai)"),
                 showPostDate: z.boolean().optional().default(true).describe("是否展示 post 日期"),
                 showPageDate: z.boolean().optional().default(true).describe("是否展示 page 日期"),
                 showCreatedOrUpdated: z
@@ -81,6 +86,7 @@ export const schema = z
             })
             .optional()
             .default({
+                timezone: "Asia/Shanghai",
                 showPostDate: true,
                 showPageDate: true,
                 showCreatedOrUpdated: "created",

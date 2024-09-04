@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { blogConfig } from "virtual-blog-config";
 
 import { getComponentByType } from "server/api/components";
+import { fromISODateString } from "utils/date";
 
 import { Image } from "./Image";
 import { Link } from "./Link";
@@ -12,6 +13,7 @@ export interface FooterProps extends React.PropsWithClassName {}
 export const Footer: React.FC<FooterProps> = async props => {
     const { className } = props;
     const { title } = blogConfig;
+    const { timezone } = blogConfig.date;
 
     const Footer = await getComponentByType("footer");
 
@@ -26,7 +28,8 @@ export const Footer: React.FC<FooterProps> = async props => {
                     <SwitchThemeButton />
 
                     <p>
-                        Copyright © {dayjs().year()} {title}
+                        Copyright © {fromISODateString(dayjs().toISOString(), timezone).year()}{" "}
+                        {title}
                     </p>
 
                     <p className="space-x-2">

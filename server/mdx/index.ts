@@ -8,7 +8,9 @@ import { filter, isEmpty, isTruthy, map, pipe } from "remeda";
 import strip from "strip-markdown";
 import { parse, stringify } from "yaml";
 
+import { getBlogConfig } from "server/blog/validate";
 import { getValuesFromProcessEnv } from "server/utils/env";
+import { toISODateString } from "utils/date";
 import { createDebugger } from "utils/debug";
 import {
     permalinkToSlug,
@@ -29,6 +31,9 @@ import type { VFile } from "server/utils/vfile";
 const debug = createDebugger("[mdx-transform]");
 
 const { isDev } = getValuesFromProcessEnv();
+
+const blogConfig = getBlogConfig();
+const { timezone } = blogConfig.date;
 
 const mdToText = async (md: string) => {
     // debug.start("Convert markdown to text");
@@ -145,8 +150,14 @@ export const parseMdxFile = async (vfile: VFile) => {
     });
 
     const title = ((data.title as Nullable<string>) || "").toString();
-    const created = ((data.created as Nullable<string>) || "1970-01-01T00:00").toString();
-    const updated = ((data.updated as Nullable<string>) || "1970-01-01T00:00").toString();
+    const created = toISODateString(
+        ((data.created as Nullable<string>) || "1970-01-01T00:00:00").toString(),
+        timezone,
+    );
+    const updated = toISODateString(
+        ((data.updated as Nullable<string>) || "1970-01-01T00:00:00").toString(),
+        timezone,
+    );
     const categories = pipe(
         data.categories || [],
         filter<Nullable<string>, string>(isTruthy),
