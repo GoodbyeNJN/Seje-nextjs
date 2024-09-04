@@ -16,7 +16,7 @@ import type { ZodError } from "zod";
 
 const logger = createLogger("[blog-config-validator]");
 const debug = createDebugger("[blog-config-validator]");
-const { isProd, skipValidation } = getValuesFromProcessEnv();
+const { isProd } = getValuesFromProcessEnv();
 
 const validate = () => {
     let blogConfig = defaultBlogConfig;
@@ -35,8 +35,6 @@ const validate = () => {
 
         return blogConfig;
     }
-
-    if (skipValidation) return blogConfig;
 
     try {
         blogConfig = schema.parse(blogConfig);

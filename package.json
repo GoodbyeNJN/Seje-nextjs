@@ -6,10 +6,9 @@
     "scripts": {
         "dev": "next dev",
         "dev:preview": "PREVIEW=1 next dev",
-        "dev:perf": "CONSOLA_LEVEL=4 next dev",
+        "dev:perf": "DEBUG=app:* next dev",
         "build": "next build",
         "build:analyze": "BUNDLE_ANALYZE=1 next build",
-        "build:ci": "SKIP_CONFIG_VALIDATION=1 next build",
         "prepare": "tsx scripts/generate-json-schema.ts",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix"

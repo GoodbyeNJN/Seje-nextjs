@@ -8,8 +8,7 @@ export const getValuesFromProcessEnv = () => {
     const isWorkerThread = parseValueToBoolean(process.env.NEXT_PRIVATE_WORKER, false);
 
     const isDeployPreview = parseValueToBoolean(process.env.DEPLOY_PREVIEW, false);
-    const skipValidation = parseValueToBoolean(process.env.SKIP_CONFIG_VALIDATION, false);
     const useBundleAnalyzer = parseValueToBoolean(process.env.USE_BUNDLE_ANALYZER, false);
 
-    return { isDev, isProd, isWorkerThread, isDeployPreview, skipValidation, useBundleAnalyzer };
+    return { isDev, isProd, isWorkerThread, isDeployPreview, useBundleAnalyzer };
 };
