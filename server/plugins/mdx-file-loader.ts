@@ -60,7 +60,7 @@ const metadataMap = new Map<string, Metadata>();
 
 const EXCLUDE_DRAFTS_PATTERN = "**/!(_)*.{md,mdx}";
 const ALL_MARKDOWN_PATTERN = "**/*.{md,mdx}";
-const pattern = isDeployPreview ? EXCLUDE_DRAFTS_PATTERN : ALL_MARKDOWN_PATTERN;
+const pattern = isProd || isDeployPreview ? EXCLUDE_DRAFTS_PATTERN : ALL_MARKDOWN_PATTERN;
 
 const isMdxFile = ({ extname }: VFile) => extname === ".md" || extname === ".mdx";
 
