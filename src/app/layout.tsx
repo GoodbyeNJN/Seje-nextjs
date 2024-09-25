@@ -3,7 +3,6 @@ import { blogConfig } from "virtual-blog-config";
 import { Footer } from "client/components/Footer";
 import { GoogleFont } from "client/components/GoogleFont";
 import { Header } from "client/components/Header";
-import { ModalContainer } from "client/components/Modal";
 import { ThemeScript } from "client/components/ThemeScript";
 import { TraceScript } from "client/components/TraceScript";
 
@@ -33,11 +32,9 @@ const Layout: React.FC<React.PropsWithChildren> = props => {
                 <Header className="flex-initial" />
                 <hr />
 
-                <ModalContainer>
-                    <main className="flex flex-1 flex-col gap-4 px-2 sm:px-4 md:px-6 lg:px-8">
-                        {children}
-                    </main>
-                </ModalContainer>
+                <main className="flex flex-1 flex-col gap-4 px-2 sm:px-4 md:px-6 lg:px-8">
+                    {children}
+                </main>
 
                 <hr />
                 <Footer className="flex-initial" />
