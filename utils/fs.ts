@@ -307,7 +307,7 @@ const implMkdir = <T extends Type>(type: T, safe?: boolean) => {
             options = { recursive: true, mode: modeOrOptions };
         }
 
-        return [dirpath, options] as [T[0], T[1]];
+        return [dirpath, options] as [T[0], Required<T[1]>];
     };
 
     const syncImpl: SyncImpl = (...params) => {
@@ -361,7 +361,7 @@ const implRm = <T extends Type>(type: T) => {
             options = { force: true, recursive: true, ...maybeOptions };
         }
 
-        return [path, options] as [T[0], fs.RmOptions];
+        return [path, options] as [T[0], Required<T[1]>];
     };
 
     const syncImpl: SyncImpl = (...params) => {
@@ -385,12 +385,23 @@ const implCp = <T extends Type>(type: T) => {
     type SyncImpl = (...params: SyncParams) => void;
     type AsyncImpl = (...params: AsyncParams) => Promise<void>;
 
+    const normalizeParams = <T extends SyncParams | AsyncParams>(params: T) => {
+        const [source, destination, maybeOptions] = params;
+
+        let options: fs.CopyOptions = { recursive: true };
+        if (isPlainObject(maybeOptions)) {
+            options = { recursive: true, ...maybeOptions };
+        }
+
+        return [source, destination, options] as [T[0], T[1], Required<T[2]>];
+    };
+
     const syncImpl: SyncImpl = (...params) => {
-        return fs.cpSync(...params);
+        return fs.cpSync(...normalizeParams(params));
     };
 
     const asyncImpl: AsyncImpl = async (...params) => {
-        return await fsp.cp(...params);
+        return await fsp.cp(...normalizeParams(params));
     };
 
     const impl = (type === "sync" ? syncImpl : asyncImpl) as Impl<T, SyncImpl, AsyncImpl>;
